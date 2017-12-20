@@ -49,7 +49,7 @@ public final class ExoPlayerView extends FrameLayout {
     public ExoPlayerView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        boolean useTextureView = false;
+        boolean useTextureView = true;
 
         ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -99,7 +99,12 @@ public final class ExoPlayerView extends FrameLayout {
             this.player.setTextOutput(null);
             this.player.setVideoListener(null);
             this.player.removeListener(componentListener);
-            this.player.setVideoSurface(null);
+            if (surfaceView instanceof TextureView) {
+                this.player.clearVideoTextureView((TextureView) surfaceView);
+
+            } else if (surfaceView instanceof SurfaceView) {
+                this.player.clearVideoSurfaceView((SurfaceView) surfaceView);
+            }
             this.player.setMetadataOutput(componentListener);
         }
         this.player = player;
@@ -207,12 +212,12 @@ public final class ExoPlayerView extends FrameLayout {
         }
 
         @Override
-        public void onPlayerError(ExoPlaybackException e) {
-            // Do nothing.
+        public void onRepeatModeChanged(int repeatMode) {
+
         }
 
         @Override
-        public void onPositionDiscontinuity() {
+        public void onPlayerError(ExoPlaybackException e) {
             // Do nothing.
         }
 
@@ -234,6 +239,21 @@ public final class ExoPlayerView extends FrameLayout {
         @Override
         public void onMetadata(Metadata metadata) {
             Log.d("onMetadata", "onMetadata");
+        }
+
+        @Override
+        public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {
+
+        }
+
+        @Override
+        public void onPositionDiscontinuity(int reason) {
+
+        }
+
+        @Override
+        public void onSeekProcessed() {
+
         }
     }
 

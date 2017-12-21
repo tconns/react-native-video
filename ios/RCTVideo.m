@@ -1,5 +1,6 @@
 #import <React/RCTConvert.h>
 #import "RCTVideo.h"
+#import "SigmaDRM.h"
 #import <React/RCTBridgeModule.h>
 #import <React/RCTEventDispatcher.h>
 #import <React/UIView+React.h>
@@ -47,6 +48,7 @@ static NSString *const timedMetadata = @"timedMetadata";
   NSString * _resizeMode;
   BOOL _fullscreenPlayerPresented;
   UIViewController * _presentingViewController;
+  SigmaDRM *_sigmaDrm;
 }
 
 - (instancetype)initWithEventDispatcher:(RCTEventDispatcher *)eventDispatcher
@@ -321,9 +323,8 @@ static NSString *const timedMetadata = @"timedMetadata";
     [[NSURL alloc] initFileURLWithPath:[[NSBundle mainBundle] pathForResource:uri ofType:type]];
 
   if (isNetwork) {
-    NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
-    AVURLAsset *asset = [AVURLAsset URLAssetWithURL:url options:@{AVURLAssetHTTPCookiesKey : cookies}];
-    return [AVPlayerItem playerItemWithAsset:asset];
+    self->_sigmaDrm = [[SigmaDRM alloc] initWithUrl:uri];
+    return [AVPlayerItem playerItemWithAsset:[_sigmaDrm assset]];
   }
   else if (isAsset) {
     AVURLAsset *asset = [AVURLAsset URLAssetWithURL:url options:nil];

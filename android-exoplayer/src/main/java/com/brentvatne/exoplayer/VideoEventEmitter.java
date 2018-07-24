@@ -120,7 +120,7 @@ class VideoEventEmitter {
     }
 
     void showUid(String dataShow){
-        Log.e("DATASHOW:", dataShow);
+        // Log.e("DATASHOW:", dataShow);
         WritableMap event = Arguments.createMap();
         event.putString(EVENT_PROP_SHOW_UID, dataShow);
         receiveEvent(EVENT_SHOW_UID, event);

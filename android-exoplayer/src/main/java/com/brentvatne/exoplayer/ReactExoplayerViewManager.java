@@ -3,15 +3,23 @@ package com.brentvatne.exoplayer;
 import android.content.Context;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
+import com.google.android.exoplayer2.source.hls.playlist.HlsPlaylist;
+import com.google.android.exoplayer2.source.hls.playlist.HlsPlaylistParser;
 import com.google.android.exoplayer2.upstream.RawResourceDataSource;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Map;
+import java.util.Vector;
 
 import javax.annotation.Nullable;
 
@@ -32,6 +40,8 @@ public class ReactExoplayerViewManager extends ViewGroupManager<ReactExoplayerVi
     private static final String PROP_RATE = "rate";
     private static final String PROP_PLAY_IN_BACKGROUND = "playInBackground";
     private static final String PROP_DISABLE_FOCUS = "disableFocus";
+    private static final String PROP_SIGMA_UID = "sigmaUid";
+    private static final String PROP_SIGMA_DRM_URL = "sigmaDrmUrl";
 
     @Override
     public String getName() {
@@ -108,6 +118,26 @@ public class ReactExoplayerViewManager extends ViewGroupManager<ReactExoplayerVi
     @ReactProp(name = PROP_RESIZE_MODE)
     public void setResizeMode(final ReactExoplayerView videoView, final String resizeModeOrdinalString) {
         videoView.setResizeModeModifier(convertToIntDef(resizeModeOrdinalString));
+    }
+
+    @ReactProp(name = PROP_SIGMA_UID)
+    public void setSigmaUid(final ReactExoplayerView videoView,final String uid){
+        videoView.setSigmaUid(uid);
+    }
+
+    @ReactProp(name = PROP_SIGMA_DRM_URL)
+    public void setSigmaDrmUrl(final ReactExoplayerView videoView,final String drmUrlJson){
+        Vector<String> list = new Vector<String>();
+        try {
+            JSONArray jsonArray = new JSONArray(drmUrlJson);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                String url = jsonArray.getString(i);
+                list.add(url);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        videoView.setSigmaDrmUrl(list);
     }
 
     @ReactProp(name = PROP_REPEAT, defaultBoolean = false)

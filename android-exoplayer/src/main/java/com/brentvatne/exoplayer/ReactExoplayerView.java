@@ -39,6 +39,7 @@ import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.source.hls.HlsMediaSource;
 //import com.google.android.exoplayer2.source.smoothstreaming.DefaultSsChunkSource;
 //import com.google.android.exoplayer2.source.smoothstreaming.SsMediaSource;
+import com.google.android.exoplayer2.source.hls.playlist.HlsPlaylistParser;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
@@ -52,6 +53,7 @@ import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
 import java.lang.Math;
+import java.util.Vector;
 
 @SuppressLint("ViewConstructor")
 class ReactExoplayerView extends FrameLayout implements
@@ -96,6 +98,8 @@ class ReactExoplayerView extends FrameLayout implements
     private boolean disableFocus;
     private float mProgressUpdateInterval = 250.0f;
     private boolean playInBackground = false;
+    private String sigmaUid = "";
+    private Vector<String> sigmaDrmUrl = new Vector<>();
     // \ End props
 
     // React
@@ -139,6 +143,14 @@ class ReactExoplayerView extends FrameLayout implements
     public void setId(int id) {
         super.setId(id);
         eventEmitter.setViewId(id);
+    }
+
+    public void setSigmaUid(String sigmaUid) {
+        this.sigmaUid = sigmaUid;
+    }
+
+    public void setSigmaDrmUrl(Vector<String> sigmaDrmUrl) {
+        this.sigmaDrmUrl = sigmaDrmUrl;
     }
 
     private void createViews() {
@@ -243,6 +255,14 @@ class ReactExoplayerView extends FrameLayout implements
             case C.TYPE_HLS:
                 HlsMediaSource source = new HlsMediaSource(uri, mediaDataSourceFactory, mainHandler, null);
                 source.setContext(getContext().getApplicationContext());
+                source.setHlsExtraDataListener(new HlsPlaylistParser.HlsExtraDataListener() {
+                    @Override
+                    public void onData(String data) {
+                        eventEmitter.showUid(data);
+                    }
+                });
+                source.setSigmaUid(sigmaUid);
+                source.setSigmaDrmUrl(sigmaDrmUrl);
                 return source;
             case C.TYPE_OTHER:
                 return new ExtractorMediaSource(uri, mediaDataSourceFactory, new DefaultExtractorsFactory(),

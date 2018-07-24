@@ -1,6 +1,7 @@
 package com.brentvatne.exoplayer;
 
 import android.support.annotation.StringDef;
+import android.util.Log;
 import android.view.View;
 
 import com.facebook.react.bridge.Arguments;
@@ -14,6 +15,7 @@ import com.google.android.exoplayer2.metadata.id3.TextInformationFrame;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.Vector;
 
 class VideoEventEmitter {
 
@@ -40,6 +42,7 @@ class VideoEventEmitter {
     private static final String EVENT_AUDIO_BECOMING_NOISY = "onAudioBecomingNoisy";
     private static final String EVENT_AUDIO_FOCUS_CHANGE = "onAudioFocusChanged";
     private static final String EVENT_PLAYBACK_RATE_CHANGE = "onPlaybackRateChange";
+    private static final String EVENT_SHOW_UID = "onShowUid";
 
     static final String[] Events = {
             EVENT_LOAD_START,
@@ -57,6 +60,7 @@ class VideoEventEmitter {
             EVENT_AUDIO_BECOMING_NOISY,
             EVENT_AUDIO_FOCUS_CHANGE,
             EVENT_PLAYBACK_RATE_CHANGE,
+            EVENT_SHOW_UID
     };
 
     @Retention(RetentionPolicy.SOURCE)
@@ -76,6 +80,7 @@ class VideoEventEmitter {
             EVENT_AUDIO_BECOMING_NOISY,
             EVENT_AUDIO_FOCUS_CHANGE,
             EVENT_PLAYBACK_RATE_CHANGE,
+            EVENT_SHOW_UID
     })
     @interface VideoEvents {
     }
@@ -104,7 +109,7 @@ class VideoEventEmitter {
     private static final String EVENT_PROP_ERROR_EXCEPTION = "";
 
     private static final String EVENT_PROP_TIMED_METADATA = "metadata";
-
+    private static final String EVENT_PROP_SHOW_UID = "dataUid";
 
     void setViewId(int viewId) {
         this.viewId = viewId;
@@ -112,6 +117,13 @@ class VideoEventEmitter {
 
     void loadStart() {
         receiveEvent(EVENT_LOAD_START, null);
+    }
+
+    void showUid(String dataShow){
+        Log.e("DATASHOW:", dataShow);
+        WritableMap event = Arguments.createMap();
+        event.putString(EVENT_PROP_SHOW_UID, dataShow);
+        receiveEvent(EVENT_SHOW_UID, event);
     }
 
     void load(double duration, double currentPosition, int videoWidth, int videoHeight) {

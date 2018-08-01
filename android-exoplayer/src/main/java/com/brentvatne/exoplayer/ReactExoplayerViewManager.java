@@ -42,6 +42,8 @@ public class ReactExoplayerViewManager extends ViewGroupManager<ReactExoplayerVi
     private static final String PROP_DISABLE_FOCUS = "disableFocus";
     private static final String PROP_SIGMA_UID = "sigmaUid";
     private static final String PROP_SIGMA_DRM_URL = "sigmaDrmUrl";
+    private static final String PROP_SIGMA_CLIENT_ID = "sigmaClientId";
+    private static final String PROP_SIGMA_AUTHEN_TOKEN = "sigmaAuthenToken";
 
     @Override
     public String getName() {
@@ -123,6 +125,16 @@ public class ReactExoplayerViewManager extends ViewGroupManager<ReactExoplayerVi
     @ReactProp(name = PROP_SIGMA_UID)
     public void setSigmaUid(final ReactExoplayerView videoView,final String uid){
         videoView.setSigmaUid(uid);
+    }
+
+    @ReactProp(name = PROP_SIGMA_CLIENT_ID)
+    public void setSigmaClientId(final ReactExoplayerView videoView,final String clientId){
+        videoView.setSigmaClientId(clientId);
+    }
+
+    @ReactProp(name = PROP_SIGMA_AUTHEN_TOKEN)
+    public void setSigmaAuthenToken(final ReactExoplayerView videoView,final String token){
+        videoView.setSigmaAuthenToken(token);
     }
 
     @ReactProp(name = PROP_SIGMA_DRM_URL)

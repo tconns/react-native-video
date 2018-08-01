@@ -249,6 +249,8 @@ export default class Video extends Component {
 
 Video.propTypes = {
   /* Native only */
+  sigmaClientId: PropTypes.string,
+  sigmaAuthenToken: PropTypes.string,
   sigmaUid: PropTypes.string,
   sigmaDrmUrl: PropTypes.string,
   src: PropTypes.object,
@@ -322,6 +324,8 @@ const RCTVideo = requireNativeComponent("RCTVideo", Video, {
     seek: true,
     fullscreen: true,
     sigmaUid: "",
-    sigmaDrmUrl: null
+    sigmaDrmUrl: null,
+    sigmaAuthenToken: "",
+    sigmaClientId:""
   }
 });

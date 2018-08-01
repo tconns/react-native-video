@@ -39,6 +39,8 @@ import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.source.hls.HlsMediaSource;
 //import com.google.android.exoplayer2.source.smoothstreaming.DefaultSsChunkSource;
 //import com.google.android.exoplayer2.source.smoothstreaming.SsMediaSource;
+import com.google.android.exoplayer2.source.hls.SigmaAdapter;
+import com.google.android.exoplayer2.source.hls.SigmaHelper;
 import com.google.android.exoplayer2.source.hls.playlist.HlsPlaylistParser;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
@@ -99,6 +101,8 @@ class ReactExoplayerView extends FrameLayout implements
     private float mProgressUpdateInterval = 250.0f;
     private boolean playInBackground = false;
     private String sigmaUid = "";
+    private String sigmaClientId = "";
+    private String sigmaAuthenToken= "";
     private Vector<String> sigmaDrmUrl = new Vector<>();
     // \ End props
 
@@ -151,6 +155,14 @@ class ReactExoplayerView extends FrameLayout implements
 
     public void setSigmaDrmUrl(Vector<String> sigmaDrmUrl) {
         this.sigmaDrmUrl = sigmaDrmUrl;
+    }
+
+    public void setSigmaClientId(String sigmaClientId) {
+        this.sigmaClientId = sigmaClientId;
+    }
+
+    public void setSigmaAuthenToken(String sigmaAuthenToken) {
+        this.sigmaAuthenToken = sigmaAuthenToken;
     }
 
     private void createViews() {
@@ -263,6 +275,13 @@ class ReactExoplayerView extends FrameLayout implements
                 });
                 source.setSigmaUid(sigmaUid);
                 source.setSigmaDrmUrl(sigmaDrmUrl);
+                SigmaHelper.instance().setClientId(sigmaClientId);
+                SigmaHelper.instance().setAdapter(new SigmaAdapter() {
+                    @Override
+                    public String authenToken() {
+                        return sigmaAuthenToken;
+                    }
+                });
                 return source;
             case C.TYPE_OTHER:
                 return new ExtractorMediaSource(uri, mediaDataSourceFactory, new DefaultExtractorsFactory(),

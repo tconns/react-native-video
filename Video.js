@@ -249,6 +249,7 @@ export default class Video extends Component {
 
 Video.propTypes = {
   /* Native only */
+  onShowUid: PropTypes.func,
   sigmaClientId: PropTypes.string,
   sigmaAuthenToken: PropTypes.string,
   sigmaUid: PropTypes.string,

@@ -1,6 +1,5 @@
 #import <React/RCTConvert.h>
 #import "RCTVideo.h"
-#import "SigmaDRM.h"
 #import <React/RCTBridgeModule.h>
 #import <React/RCTEventDispatcher.h>
 #import <React/UIView+React.h>
@@ -85,6 +84,7 @@ static NSString *const timedMetadata = @"timedMetadata";
                                              selector:@selector(applicationWillEnterForeground:)
                                                  name:UIApplicationWillEnterForegroundNotification
                                                object:nil];
+      [[SigmaDRM getInstance] setDelegate:self];
   }
 
   return self;
@@ -323,8 +323,8 @@ static NSString *const timedMetadata = @"timedMetadata";
     [[NSURL alloc] initFileURLWithPath:[[NSBundle mainBundle] pathForResource:uri ofType:type]];
 
   if (isNetwork) {
-    self->_sigmaDrm = [[SigmaDRM alloc] initWithUrl:uri];
-    return [AVPlayerItem playerItemWithAsset:[_sigmaDrm assset]];
+    self->_sigmaDrm = [SigmaDRM getInstance];
+    return [AVPlayerItem playerItemWithAsset:[[SigmaDRM getInstance] assetWithUrl:uri]];
   }
   else if (isAsset) {
     AVURLAsset *asset = [AVURLAsset URLAssetWithURL:url options:nil];
@@ -840,4 +840,42 @@ static NSString *const timedMetadata = @"timedMetadata";
   [super removeFromSuperview];
 }
 
+#pragma mark - Sigma Module
+-(void)setSigmaClientId:(NSString *)clientId {
+    [[SigmaDRM getInstance] setClientId:clientId];
+}
+-(void)setSigmaAuthenToken:(NSString *)authToken
+{
+    [[SigmaDRM getInstance] setAuthToken:authToken];
+}
+-(void)setSigmaUid:(NSString *)sigmaUid
+{
+    [[SigmaDRM getInstance] setSigmaUid:sigmaUid];
+}
+-(void)setSigmaDrmUrl:(NSString *)drmUrl
+{
+    NSError *err;
+    NSArray *drms = [NSJSONSerialization JSONObjectWithData:[NSData dataWithBytes:[drmUrl UTF8String] length:[drmUrl length]] options:NSJSONReadingMutableContainers error:&err];
+    [[SigmaDRM getInstance] setDrmUrl:drms];
+}
+-(void)onSigmaStatus:(NSInteger)status
+{
+    if (self.onShowUid){
+        NSString *dataUid = @"";
+        switch (status) {
+            case 1:
+                dataUid = @"hideInfo";
+                break;
+            case 2:
+                dataUid = @"showInfo";
+                break;
+            case 3:
+                dataUid = @"denied";
+                break;
+            default:
+                break;
+        }
+        self.onShowUid(@{@"dataUid": dataUid});
+    }
+}
 @end

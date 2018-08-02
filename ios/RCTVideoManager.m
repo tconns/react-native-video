@@ -34,6 +34,11 @@ RCT_EXPORT_VIEW_PROPERTY(seek, float);
 RCT_EXPORT_VIEW_PROPERTY(currentTime, float);
 RCT_EXPORT_VIEW_PROPERTY(fullscreen, BOOL);
 RCT_EXPORT_VIEW_PROPERTY(progressUpdateInterval, float);
+RCT_EXPORT_VIEW_PROPERTY(sigmaClientId, NSString);
+RCT_EXPORT_VIEW_PROPERTY(sigmaAuthenToken, NSString);
+RCT_EXPORT_VIEW_PROPERTY(sigmaUid, NSString);
+RCT_EXPORT_VIEW_PROPERTY(sigmaDrmUrl, NSString);
+
 /* Should support: onLoadStart, onLoad, and onError to stay consistent with Image */
 RCT_EXPORT_VIEW_PROPERTY(onVideoLoadStart, RCTBubblingEventBlock);
 RCT_EXPORT_VIEW_PROPERTY(onVideoLoad, RCTBubblingEventBlock);
@@ -51,6 +56,7 @@ RCT_EXPORT_VIEW_PROPERTY(onReadyForDisplay, RCTBubblingEventBlock);
 RCT_EXPORT_VIEW_PROPERTY(onPlaybackStalled, RCTBubblingEventBlock);
 RCT_EXPORT_VIEW_PROPERTY(onPlaybackResume, RCTBubblingEventBlock);
 RCT_EXPORT_VIEW_PROPERTY(onPlaybackRateChange, RCTBubblingEventBlock);
+RCT_EXPORT_VIEW_PROPERTY(onShowUid, RCTBubblingEventBlock);
 
 - (NSDictionary *)constantsToExport
 {

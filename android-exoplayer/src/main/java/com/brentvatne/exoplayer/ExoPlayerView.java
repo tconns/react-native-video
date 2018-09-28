@@ -16,6 +16,7 @@ import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.PlaybackParameters;
+import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.metadata.Metadata;
@@ -99,12 +100,13 @@ public final class ExoPlayerView extends FrameLayout {
             this.player.setTextOutput(null);
             this.player.setVideoListener(null);
             this.player.removeListener(componentListener);
+
             if (surfaceView instanceof TextureView) {
                 this.player.clearVideoTextureView((TextureView) surfaceView);
-
             } else if (surfaceView instanceof SurfaceView) {
                 this.player.clearVideoSurfaceView((SurfaceView) surfaceView);
             }
+//            this.player.setVideoSurface(null);
             this.player.setMetadataOutput(componentListener);
         }
         this.player = player;
@@ -212,13 +214,13 @@ public final class ExoPlayerView extends FrameLayout {
         }
 
         @Override
-        public void onRepeatModeChanged(int repeatMode) {
-
+        public void onPlayerError(ExoPlaybackException e) {
+            // Do nothing.
         }
 
         @Override
-        public void onPlayerError(ExoPlaybackException e) {
-            // Do nothing.
+        public void onPositionDiscontinuity(int reason) {
+
         }
 
         @Override
@@ -237,8 +239,13 @@ public final class ExoPlayerView extends FrameLayout {
         }
 
         @Override
-        public void onMetadata(Metadata metadata) {
-            Log.d("onMetadata", "onMetadata");
+        public void onSeekProcessed() {
+
+        }
+
+        @Override
+        public void onRepeatModeChanged(@Player.RepeatMode int repeatMode) {
+
         }
 
         @Override
@@ -246,14 +253,10 @@ public final class ExoPlayerView extends FrameLayout {
 
         }
 
-        @Override
-        public void onPositionDiscontinuity(int reason) {
-
-        }
 
         @Override
-        public void onSeekProcessed() {
-
+        public void onMetadata(Metadata metadata) {
+            Log.d("onMetadata", "onMetadata");
         }
     }
 

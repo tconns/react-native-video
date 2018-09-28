@@ -10,8 +10,7 @@ import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
-import com.google.android.exoplayer2.source.hls.playlist.HlsPlaylist;
-import com.google.android.exoplayer2.source.hls.playlist.HlsPlaylistParser;
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.upstream.RawResourceDataSource;
 
 import org.json.JSONArray;
@@ -40,6 +39,13 @@ public class ReactExoplayerViewManager extends ViewGroupManager<ReactExoplayerVi
     private static final String PROP_RATE = "rate";
     private static final String PROP_PLAY_IN_BACKGROUND = "playInBackground";
     private static final String PROP_DISABLE_FOCUS = "disableFocus";
+
+    public static final String PROP_SELECTED_VIDEO_TRACK = "selectedVideoTrack";
+    public static final String PROP_SELECTED_AUDIO_TRACK = "selectedAudioTrack";
+    public static final String PROP_SELECTED_TEXT_TRACK = "selectedTextTrack";
+
+
+    private static final String PROP_USE_PEER = "usePeer";
     private static final String PROP_SIGMA_UID = "sigmaUid";
     private static final String PROP_SIGMA_DRM_URL = "sigmaDrmUrl";
     private static final String PROP_SIGMA_CLIENT_ID = "sigmaClientId";
@@ -122,36 +128,6 @@ public class ReactExoplayerViewManager extends ViewGroupManager<ReactExoplayerVi
         videoView.setResizeModeModifier(convertToIntDef(resizeModeOrdinalString));
     }
 
-    @ReactProp(name = PROP_SIGMA_UID)
-    public void setSigmaUid(final ReactExoplayerView videoView,final String uid){
-        videoView.setSigmaUid(uid);
-    }
-
-    @ReactProp(name = PROP_SIGMA_CLIENT_ID)
-    public void setSigmaClientId(final ReactExoplayerView videoView,final String clientId){
-        videoView.setSigmaClientId(clientId);
-    }
-
-    @ReactProp(name = PROP_SIGMA_AUTHEN_TOKEN)
-    public void setSigmaAuthenToken(final ReactExoplayerView videoView,final String token){
-        videoView.setSigmaAuthenToken(token);
-    }
-
-    @ReactProp(name = PROP_SIGMA_DRM_URL)
-    public void setSigmaDrmUrl(final ReactExoplayerView videoView,final String drmUrlJson){
-        Vector<String> list = new Vector<String>();
-        try {
-            JSONArray jsonArray = new JSONArray(drmUrlJson);
-            for (int i = 0; i < jsonArray.length(); i++) {
-                String url = jsonArray.getString(i);
-                list.add(url);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        videoView.setSigmaDrmUrl(list);
-    }
-
     @ReactProp(name = PROP_REPEAT, defaultBoolean = false)
     public void setRepeat(final ReactExoplayerView videoView, final boolean repeat) {
         videoView.setRepeatModifier(repeat);
@@ -180,6 +156,24 @@ public class ReactExoplayerViewManager extends ViewGroupManager<ReactExoplayerVi
     @ReactProp(name = PROP_SEEK)
     public void setSeek(final ReactExoplayerView videoView, final float seek) {
         videoView.seekTo(Math.round(seek * 1000f));
+    }
+
+    @ReactProp(name = PROP_SELECTED_VIDEO_TRACK)
+    public void setSelectedVideoTrack(final ReactExoplayerView videoView, final float index) {
+//        if (index < videoView.getNumberTrack(DemoPlayer.TYPE_VIDEO))
+            videoView.setSelectedTrack(C.TRACK_TYPE_VIDEO,Math.round(index));
+    }
+
+    @ReactProp(name = PROP_SELECTED_AUDIO_TRACK)
+    public void setSelectedAudioTrack(final ReactExoplayerView videoView, final float index) {
+//        if (index < videoView.getNumberTrack(DemoPlayer.TYPE_AUDIO))
+            videoView.setSelectedTrack(C.TRACK_TYPE_AUDIO,Math.round(index));
+    }
+
+    @ReactProp(name = PROP_SELECTED_TEXT_TRACK)
+    public void setSelectedTextTrack(final ReactExoplayerView videoView, final float index) {
+//        if (index < videoView.getNumberTrack(DemoPlayer.TYPE_TEXT))
+            videoView.setSelectedTrack(C.TRACK_TYPE_TEXT,Math.round(index));
     }
 
     @ReactProp(name = PROP_RATE)
@@ -211,5 +205,40 @@ public class ReactExoplayerViewManager extends ViewGroupManager<ReactExoplayerVi
             return ResizeMode.toResizeMode(resizeModeOrdinal);
         }
         return ResizeMode.RESIZE_MODE_FIT;
+    }
+
+    @ReactProp(name = PROP_USE_PEER)
+    public void setUsePeer(final ReactExoplayerView videoView,final boolean usePeer){
+        videoView.setUsePeer(usePeer);
+    }
+
+    @ReactProp(name = PROP_SIGMA_UID)
+    public void setSigmaUid(final ReactExoplayerView videoView,final String uid){
+        videoView.setSigmaUid(uid);
+    }
+
+    @ReactProp(name = PROP_SIGMA_CLIENT_ID)
+    public void setSigmaClientId(final ReactExoplayerView videoView,final String clientId){
+        videoView.setSigmaClientId(clientId);
+    }
+
+    @ReactProp(name = PROP_SIGMA_AUTHEN_TOKEN)
+    public void setSigmaAuthenToken(final ReactExoplayerView videoView,final String token){
+        videoView.setSigmaAuthenToken(token);
+    }
+
+    @ReactProp(name = PROP_SIGMA_DRM_URL)
+    public void setSigmaDrmUrl(final ReactExoplayerView videoView,final String drmUrlJson){
+        Vector<String> list = new Vector<String>();
+        try {
+            JSONArray jsonArray = new JSONArray(drmUrlJson);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                String url = jsonArray.getString(i);
+                list.add(url);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        videoView.setSigmaDrmUrl(list);
     }
 }

@@ -4,11 +4,10 @@
 #import "UIView+FindUIViewController.h"
 #import "RCTVideoPlayerViewController.h"
 #import "RCTVideoPlayerViewControllerDelegate.h"
-#import "SigmaDRM.h"
 
 @class RCTEventDispatcher;
 
-@interface RCTVideo : UIView <RCTVideoPlayerViewControllerDelegate, SigmaDRMDelegate>
+@interface RCTVideo : UIView <RCTVideoPlayerViewControllerDelegate>
 
 @property (nonatomic, copy) RCTBubblingEventBlock onVideoLoadStart;
 @property (nonatomic, copy) RCTBubblingEventBlock onVideoLoad;
@@ -26,7 +25,6 @@
 @property (nonatomic, copy) RCTBubblingEventBlock onPlaybackStalled;
 @property (nonatomic, copy) RCTBubblingEventBlock onPlaybackResume;
 @property (nonatomic, copy) RCTBubblingEventBlock onPlaybackRateChange;
-@property (nonatomic, copy) RCTBubblingEventBlock onShowUid;
 
 - (instancetype)initWithEventDispatcher:(RCTEventDispatcher *)eventDispatcher NS_DESIGNATED_INITIALIZER;
 

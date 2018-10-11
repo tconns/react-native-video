@@ -11,7 +11,7 @@ android {
 }
 
 dependencies {
-    provided 'com.facebook.react:react-native:+'
+    compile project(':ReactAndroid')
     compile project(':library')
     compile(project(':extension-okhttp')) {
         exclude group: 'com.squareup.okhttp3', module: 'okhttp'

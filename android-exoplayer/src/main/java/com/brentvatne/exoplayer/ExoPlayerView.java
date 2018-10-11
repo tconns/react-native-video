@@ -16,6 +16,7 @@ import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.PlaybackParameters;
+import com.google.android.exoplayer2.SimpleAdsExoPlayer;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.metadata.Metadata;
@@ -37,6 +38,7 @@ public final class ExoPlayerView extends FrameLayout {
     private final AspectRatioFrameLayout layout;
     private final ComponentListener componentListener;
     private SimpleExoPlayer player;
+    private SimpleAdsExoPlayer adsExoPlayer;
 
     public ExoPlayerView(Context context) {
         this(context, null);

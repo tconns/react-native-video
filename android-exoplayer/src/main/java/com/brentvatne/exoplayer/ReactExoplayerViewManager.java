@@ -139,17 +139,17 @@ public class ReactExoplayerViewManager extends ViewGroupManager<ReactExoplayerVi
 
     @ReactProp(name = PROP_SIGMA_DRM_URL)
     public void setSigmaDrmUrl(final ReactExoplayerView videoView,final String drmUrlJson){
-        Vector<String> list = new Vector<String>();
-        try {
-            JSONArray jsonArray = new JSONArray(drmUrlJson);
-            for (int i = 0; i < jsonArray.length(); i++) {
-                String url = jsonArray.getString(i);
-                list.add(url);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        videoView.setSigmaDrmUrl(list);
+//        Vector<String> list = new Vector<String>();
+//        try {
+//            JSONArray jsonArray = new JSONArray(drmUrlJson);
+//            for (int i = 0; i < jsonArray.length(); i++) {
+//                String url = jsonArray.getString(i);
+//                list.add(url);
+//            }
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        videoView.setSigmaDrmUrl(list);
     }
 
     @ReactProp(name = PROP_REPEAT, defaultBoolean = false)

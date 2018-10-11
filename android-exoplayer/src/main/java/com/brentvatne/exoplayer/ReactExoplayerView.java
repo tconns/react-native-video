@@ -17,11 +17,14 @@ import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
+import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.PlaybackParameters;
+import com.google.android.exoplayer2.RenderersFactory;
+import com.google.android.exoplayer2.SimpleAdsExoPlayer;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
@@ -83,6 +86,7 @@ class ReactExoplayerView extends FrameLayout implements
 
     private DataSource.Factory mediaDataSourceFactory;
     private SimpleExoPlayer player;
+    private SimpleAdsExoPlayer adsExoPlayer;
     private MappingTrackSelector trackSelector;
     private boolean playerNeedsSource;
 
@@ -102,7 +106,7 @@ class ReactExoplayerView extends FrameLayout implements
     private boolean playInBackground = false;
     private String sigmaUid = "";
     private String sigmaClientId = "";
-    private String sigmaAuthenToken= "";
+    private String sigmaAuthenToken = "";
     private Vector<String> sigmaDrmUrl = new Vector<>();
     // \ End props
 
@@ -228,6 +232,9 @@ class ReactExoplayerView extends FrameLayout implements
         if (player == null) {
             TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(BANDWIDTH_METER);
             trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
+//            if (adsExoPlayer == null) {
+//                adsExoPlayer = ExoPlayerFactory.newSimpleAdsInstance(getContext(), trackSelector, new DefaultLoadControl());
+//            }
             player = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector, new DefaultLoadControl());
             player.addListener(this);
             player.setMetadataOutput(this);
@@ -657,12 +664,12 @@ class ReactExoplayerView extends FrameLayout implements
     }
 
     public void setRateModifier(float newRate) {
-      rate = newRate;
+        rate = newRate;
 
-      if (player != null) {
-          PlaybackParameters params = new PlaybackParameters(rate, 1f);
-          player.setPlaybackParameters(params);
-      }
+        if (player != null) {
+            PlaybackParameters params = new PlaybackParameters(rate, 1f);
+            player.setPlaybackParameters(params);
+        }
     }
 
 
